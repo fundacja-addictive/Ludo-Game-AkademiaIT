@@ -1,4 +1,5 @@
 # akademia-it-vue
+![image](https://github.com/fundacja-addictive/Ludo-Game-AkademiaIT/assets/5606512/955370ae-b9cb-469c-aa5c-58dc665e7d8a)
 
 ## Project setup
 ```
