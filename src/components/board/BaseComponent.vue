@@ -1,6 +1,6 @@
 <template>
     <div class="base-container">
-        <slot-component v-for="slot in 4" :key="slot" :color="player.color"></slot-component>
+        <slot-component v-for="slot in 4" :key="slot" :color="player.color" :pawn="getPawn(slot)"></slot-component>
     </div>
 </template>
 <script>
@@ -12,6 +12,14 @@ export default {
     },
     props: {
         player: Object,
+    },
+    methods: {
+        getPawn: function (slot) {
+            return {
+                number: this.player.id + '.' + slot,
+                color: this.player.color,
+            };
+        },
     }
 }
 </script>

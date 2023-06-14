@@ -1,13 +1,19 @@
 <template lang="html">
     <div :class="'slot ' + color">
-        {{ fieldId }}
+        <pawn-component v-if="pawn" :pawn="pawn" :color="pawn.color"></pawn-component>
     </div>
 </template>
 <script>
+import PawnComponent from './PawnComponent.vue';
+
 export default {
+    components: {
+        PawnComponent
+    },
     props: {
         color: String,
         fieldId: null,
+        pawn: null,
     }
 }
 </script>
@@ -17,6 +23,7 @@ export default {
         height: 30px;
         border: 1px grey solid;
         margin: 1px;
+        display: flex;
     }
 
     .red {
