@@ -33,18 +33,22 @@ export default {
     }
 
     .red {
+        opacity: 1;
         background-color: red;
     }
 
     .green {
+        opacity: 1;
         background-color: green;
     }
 
     .blue {
+        opacity: 1;
         background-color: blue;
     }
 
     .yellow {
+        opacity: 1;
         background-color: yellow;
     }
 </style>

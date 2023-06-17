@@ -1,8 +1,15 @@
 <template>
+    <div>
+        <p>Twój kolor: </p>
+        <p v-if="players.find(p => p.uuid == player.uuid)?.color == 'red'" class="red">czerwony</p>
+        <p v-if="players.find(p => p.uuid == player.uuid)?.color == 'green'" class="green">zielony</p>
+        <p v-if="players.find(p => p.uuid == player.uuid)?.color == 'blue'" class="blue">niebieski</p>
+        <p v-if="players.find(p => p.uuid == player.uuid)?.color == 'yellow'" class="yellow">żółty</p>
+    </div>
     <div class="board-container">
         <base-component v-for="player in players" :player="player" v-bind:key="player.id" :style="getBaseStyle(player.id)"></base-component>
         <home-component v-for="player in players" :player="player" :key="player.id" :style="getHomeStyle(player.id)"></home-component>
-        <field-component v-for="field in 40" :field="field" :key="field" :fieldId="field" :style="'grid-column: ' + getColumn(field) + ' / span 1; grid-row: ' + getRow(field) + '/ span 1;'"></field-component>
+        <field-component v-for="position in 40" :field="position" :key="position" :fieldId="position" :pawn="getPawn(position)" :style="'grid-column: ' + getColumn(position) + ' / span 1; grid-row: ' + getRow(position) + '/ span 1;'"></field-component>
     </div>
 </template>
 
@@ -57,6 +64,7 @@ export default {
     },
     mounted: function () {
         socket.io.on("playerReady", (player) => {
+            console.log('playerReady', player);
             this.players.find(p => p.uuid == null).uuid = player.uuid;
         });
         socket.io.on("updatePawns", (playerData) => {
@@ -65,6 +73,12 @@ export default {
         socket.io.on("playerTurn", (playerData) => {
             if (playerData.uuid == this.player.uuid) {
                 Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    icon: 'success',
                     text: "Twój ruch!"
                 })
             }
@@ -150,6 +164,21 @@ export default {
                 case 4:
                     return 'grid-row: 7 / span 4; grid-column: 6 / span 1;'
             }
+        },
+        getPawn: function (position) {
+            var p = false;
+
+            this.players.forEach(player => {
+                player.pawns.forEach(pawn => {
+                    if (pawn.position == position && pawn.location == 'inBoard')
+                        p = {
+                            number: pawn.number,
+                            color: player.color,
+                        };
+                })
+            });
+
+            return p;
         },
     }
 }

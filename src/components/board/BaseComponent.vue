@@ -19,7 +19,7 @@ export default {
 
             if (pawn)
                 return {
-                    number: this.player.id + '.' + position,
+                    number: pawn.number,
                     color: this.player.color,
                 };
             else
