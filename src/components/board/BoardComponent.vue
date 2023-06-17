@@ -11,7 +11,10 @@ import BaseComponent from './BaseComponent.vue';
 import HomeComponent from './HomeComponent.vue';
 import FieldComponent from './FieldComponent.vue';
 
+import socket from '../../socket.js';
+
 import _ from 'lodash';
+import * as Swal from 'sweetalert2';
 
 export default {
     components: {
@@ -24,22 +27,49 @@ export default {
             players: [
                 {
                     id: 1,
+                    uuid: null,
                     color: "red",
+                    pawns: [],
                 },
                 {
                     id: 2,
+                    uuid: null,
                     color: "green",
+                    pawns: [],
                 },
                 {
                     id: 3,
+                    uuid: null,
                     color: "blue",
+                    pawns: [],
                 },
                 {
                     id: 4,
+                    uuid: null,
                     color: "yellow",
+                    pawns: [],
                 },
             ]
         };
+    },
+    props: {
+        player: Object,
+    },
+    mounted: function () {
+        socket.io.on("playerReady", (player) => {
+            this.players.find(p => p.uuid == null).uuid = player.uuid;
+        });
+        socket.io.on("updatePawns", (playerData) => {
+            this.players.find(p => p.uuid == playerData.playerUuid).pawns = playerData.pawns;
+        });
+        socket.io.on("playerTurn", (playerData) => {
+            if (playerData.uuid == this.player.uuid) {
+                Swal.fire({
+                    text: "Twój ruch!"
+                })
+            }
+        });
+        socket.io.on("gameStart", () => {});
     },
     methods: {
         getColumn: function (fieldId) {

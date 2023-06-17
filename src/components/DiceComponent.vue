@@ -9,18 +9,22 @@
 <script>
 import socket from '../socket.js';
 
-
 export default {
     data: function () {
         return {
             number: 0,
         };
     },
+    mounted: function () {
+        socket.io.on("draw", (diceData) => {
+            this.number = diceData.number;
+        });
+    },  
     methods: {
-        draw: function () {
-            this.number = Math.floor(Math.random() * 6 + 1);
-            this.$emit('draw', this.number);
-        },
+        // draw: function () {
+        //     this.number = Math.floor(Math.random() * 6 + 1);
+        //     this.$emit('draw', this.number);
+        // },
         doDisplay: function (section) {
             var faces = {
                 0: [],

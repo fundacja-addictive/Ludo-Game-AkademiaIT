@@ -1,6 +1,6 @@
 <template>
   <ready-to-play-component :player="player"></ready-to-play-component>
-  <board-component></board-component>
+  <board-component :player="player"></board-component>
   <!-- {{ displayDraw }} -->
   <!-- <button v-on:click="$refs.dice.draw()"></button> -->
   <dice-component v-on:draw="draw" ref="dice"></dice-component>
