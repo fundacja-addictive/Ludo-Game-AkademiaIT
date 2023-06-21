@@ -1,6 +1,6 @@
 <template>
     <div>
-        <slot-component :color="color" :fieldId="fieldId" :pawn="pawn"></slot-component>
+        <slot-component :color="color" :fieldId="fieldId" :pawns="pawns"></slot-component>
     </div>
 </template>
 <script>
@@ -12,7 +12,7 @@ export default {
     },
     props: {
         fieldId: Number,
-        pawn: null,
+        pawns: null,
     },
     computed: {
         color: function () {

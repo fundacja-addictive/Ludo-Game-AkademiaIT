@@ -1,6 +1,6 @@
 <template lang="html">
     <div :class="'slot ' + color">
-        <pawn-component v-if="pawn" :pawn="pawn" :color="pawn.color"></pawn-component>
+        <pawn-component v-for="pawn in pawns" :key="pawn.color + pawn.number" :pawn="pawn" :color="pawn.color"></pawn-component>
     </div>
 </template>
 <script>
@@ -13,7 +13,7 @@ export default {
     props: {
         color: String,
         fieldId: null,
-        pawn: null,
+        pawns: null,
     }
 }
 </script>

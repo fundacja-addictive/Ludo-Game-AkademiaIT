@@ -1,6 +1,5 @@
 <template>
-    <div :class="cssClasses" v-on:click="onClick">
-        {{ pawn.number }}
+    <div :class="cssClasses" v-on:click="onClick" :title="pawn.number">
     </div>
 </template>
 <script>
@@ -28,7 +27,7 @@ export default {
         border: 1px solid black;
         border-radius: 50%;
         width: 80%;
-        height: 80%;
+        aspect-ratio: 1;
         margin: auto;
     }
 

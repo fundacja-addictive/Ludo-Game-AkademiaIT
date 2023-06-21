@@ -9,7 +9,7 @@
     <div class="board-container">
         <base-component v-for="player in players" :player="player" v-bind:key="player.id" :style="getBaseStyle(player.id)"></base-component>
         <home-component v-for="player in players" :player="player" :key="player.id" :style="getHomeStyle(player.id)"></home-component>
-        <field-component v-for="position in 40" :field="position" :key="position" :fieldId="position" :pawn="getPawn(position)" :style="'grid-column: ' + getColumn(position) + ' / span 1; grid-row: ' + getRow(position) + '/ span 1;'"></field-component>
+        <field-component v-for="position in 40" :field="position" :key="position" :fieldId="position" :pawns="getPawns(position)" :style="'grid-column: ' + getColumn(position) + ' / span 1; grid-row: ' + getRow(position) + '/ span 1;'"></field-component>
     </div>
 </template>
 
@@ -31,41 +31,19 @@ export default {
     },
     data: function () {
         return {
-            players: [
-                {
-                    id: 1,
-                    uuid: null,
-                    color: "red",
-                    pawns: [],
-                },
-                {
-                    id: 2,
-                    uuid: null,
-                    color: "green",
-                    pawns: [],
-                },
-                {
-                    id: 3,
-                    uuid: null,
-                    color: "blue",
-                    pawns: [],
-                },
-                {
-                    id: 4,
-                    uuid: null,
-                    color: "yellow",
-                    pawns: [],
-                },
-            ]
+            
         };
     },
     props: {
         player: Object,
+        players: Array,
     },
     mounted: function () {
         socket.io.on("playerReady", (player) => {
             console.log('playerReady', player);
-            this.players.find(p => p.uuid == null).uuid = player.uuid;
+            var p = this.players.find(p => p.uuid == null);
+            p.uuid = player.uuid;
+            p.name = player.name;
         });
         socket.io.on("updatePawns", (playerData) => {
             this.players.find(p => p.uuid == playerData.playerUuid).pawns = playerData.pawns;
@@ -165,20 +143,21 @@ export default {
                     return 'grid-row: 7 / span 4; grid-column: 6 / span 1;'
             }
         },
-        getPawn: function (position) {
-            var p = false;
+        getPawns: function (position) {
+            var pawns = [];
 
             this.players.forEach(player => {
                 player.pawns.forEach(pawn => {
                     if (pawn.position == position && pawn.location == 'inBoard')
-                        p = {
+                        pawns.push( {
                             number: pawn.number,
                             color: player.color,
-                        };
+                            playerUuid: this.player.uuid,
+                        } );
                 })
             });
 
-            return p;
+            return pawns;
         },
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="base-container">
-        <slot-component v-for="position in 4" :key="position" :color="player.color" :pawn="getPawn(position)"></slot-component>
+        <slot-component v-for="position in 4" :key="position" :color="player.color" :pawns="getPawns(position)"></slot-component>
     </div>
 </template>
 <script>
@@ -14,16 +14,19 @@ export default {
         player: Object,
     },
     methods: {
-        getPawn: function (position) {
+        getPawns: function (position) {
             var pawn = this.player.pawns.find(pawn => pawn.location == "inBase" && pawn.position == position);
 
             if (pawn)
-                return {
-                    number: pawn.number,
-                    color: this.player.color,
-                };
+                return [
+                    {
+                        number: pawn.number,
+                        color: this.player.color,
+                        playerUuid: this.player.uuid,
+                    }
+                ];
             else
-                return false;
+                return [];
         },
     }
 }
