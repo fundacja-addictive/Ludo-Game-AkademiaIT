@@ -1,6 +1,6 @@
 <template lang="html">
     <div>
-        <button v-if="!wasSent" v-on:click="ready()">Ready to play</button>
+        <button :disabled="notEnoughPlayers" v-if="!wasSent" v-on:click="ready()">Ready to play</button>
     </div>
 </template>
 <script>
@@ -9,10 +9,14 @@ export default {
     data: function () {
         return {
             wasSent: false,
+            notEnoughPlayers: true,
         };
     },
     props: {
         player: Object,
+    },
+    mounted () {
+        socket.io.on('enoughPlayers', () => this.notEnoughPlayers = false);
     },
     methods: {
         ready: function () {

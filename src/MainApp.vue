@@ -77,13 +77,7 @@ export default {
     this.player.uuid = v4();
     this.player.name = localStorage.getItem('playerName');
 
-    socket.emit('hello', {
-      text: 'world',
-    });
-
-    socket.io.on('hello', (data) => {
-      console.log('hello', data);
-    })
+    socket.emit('onBoard', this.player);
   },
 }
 </script>

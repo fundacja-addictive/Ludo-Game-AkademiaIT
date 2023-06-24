@@ -1,10 +1,10 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from 'vue';
+import App from './App.vue';
 import MainApp from './MainApp.vue';
 import HomeApp from './HomeApp.vue';
 
 
-import {createRouter, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router';
 
 var router = createRouter({
     routes: [
@@ -17,7 +17,7 @@ var router = createRouter({
             component: MainApp,
         }
     ],
-    history: createWebHistory(),
+    history: process.env.IS_ELECTRON ? createWebHashHistory() : createWebHistory(),
 });
 
 var vue = createApp(App); //.mount('#app')
